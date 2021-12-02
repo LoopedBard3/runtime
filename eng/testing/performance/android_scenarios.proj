@@ -46,7 +46,7 @@
         <PostCommands>$(Python) post.py</PostCommands>
     </HelixWorkItem>
     <XHarnessApkToTest Include="Startup - Android HelloWorld">
-  <ApkPath>%HELIX_CORRELATION_PAYLOAD%\HelloAndroidWithDiag.apk</ApkPath>
+  <ApkPath>$(WorkItemDirectory)/HelloAndroidWithDiag.apk</ApkPath>
   <CustomCommands>
     <![CDATA[
       echo on
