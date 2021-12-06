@@ -46,17 +46,18 @@
         <PostCommands>$(Python) post.py</PostCommands>
     </HelixWorkItem>
     <XHarnessApkToTest Include="Startup - Android HelloWorld">
-  <ApkPath>$(PayloadDirectory)\HelloAndroidWithDiag.apk</ApkPath>
-  <CustomCommands>
-    <![CDATA[
-      echo on
-      cd $(ScenarioDirectory)helloandroid
-      copy %HELIX_CORRELATION_PAYLOAD%\HelloAndroidWithDiag.apk .
-      $(Python) pre.py
-      $(Python) test.py devicestartup --device-type android --package-path pub\HelloAndroidWithDiag.apk --package-name net.dot.HelloAndroid --exit-code 42 --scenario-name "%(Identity)"
-      $(Python) post.py
-    ]]>
-  </CustomCommands>
-</XHarnessApkToTest>
+      <PayloadDirectory>$(WorkItemDirectory)</PayloadDirectory>
+      <ApkPath>$(PayloadDirectory)\HelloAndroidWithDiag.apk</ApkPath>
+      <CustomCommands>
+        <![CDATA[
+          echo on
+          cd $(ScenarioDirectory)helloandroid
+          copy %HELIX_CORRELATION_PAYLOAD%\HelloAndroidWithDiag.apk .
+          $(Python) pre.py
+          $(Python) test.py devicestartup --device-type android --package-path pub\HelloAndroidWithDiag.apk --package-name net.dot.HelloAndroid --exit-code 42 --scenario-name "%(Identity)"
+          $(Python) post.py
+        ]]>
+      </CustomCommands>
+    </XHarnessApkToTest>
   </ItemGroup>
 </Project>
