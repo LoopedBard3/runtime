@@ -48,6 +48,7 @@ if ($Internal) {
         "perfowl" { $Queue = "Windows.10.Amd64.20H2.Owl.Perf"  }
         "perfsurf" { $Queue = "Windows.10.Arm64.Perf.Surf"  }
         "perfpixel4a" { $Queue = "Windows.10.Amd64.Pixel.Perf" }
+        "perfiphone12mini" { $Queue = "OSX.1015.Amd64.Iphone.Perf"}
         Default { $Queue = "Windows.10.Amd64.19H1.Tiger.Perf" }
     }
     $PerfLabArguments = "--upload-to-perflab-container"
@@ -124,7 +125,7 @@ if ($RunFromPerformanceRepo) {
     robocopy $SourceDirectory $PerformanceDirectory /E /XD $PayloadDirectory $SourceDirectory\artifacts $SourceDirectory\.git
 }
 else {
-    git clone --branch main --depth 1 --quiet https://github.com/dotnet/performance $PerformanceDirectory
+    git clone --branch add-ios-startup --depth 1 --quiet https://github.com/LoopedBard3/performance $PerformanceDirectory
 }
 
 if($MonoDotnet -ne "")
@@ -165,6 +166,7 @@ if ($iOSMono) {
         Copy-Item -path "$SourceDirectory\iosHelloWorld\nollvm" $PayloadDirectory\iosHelloWorld\nollvm -Recurse
         Copy-Item -path "$SourceDirectory\MauiiOSDefault" $PayloadDirectory\MauiiOSDefault -Recurse
         Copy-Item -path "$SourceDirectory\MauiMacCatalystDefault" $PayloadDirectory\MauiMacCatalystDefault -Recurse
+        Compress-Archine -LiteralPath "$SourceDirectory\iosHelloWorld\nollvm\HelloiOS.app" -DestinationPath $PayloadDirectory\HelloiOS.app.zip
     }
 
     $SetupArguments = $SetupArguments -replace $Architecture, 'arm64'

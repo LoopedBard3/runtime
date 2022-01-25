@@ -202,8 +202,9 @@ if [[ "$internal" == true ]]; then
     helix_source_prefix="official"
     creator=
     extra_benchmark_dotnet_arguments=
-
-    if [[ "$architecture" == "arm64" ]]; then
+    if [[ "$logical_machine" == "perfiphone12mini" ]]; then
+        queue=OSX.1015.Amd64.Iphone.Perf
+    elif [[ "$architecture" == "arm64" ]]; then
         queue=Ubuntu.1804.Arm64.Perf
     else
         if [[ "$logical_machine" == "perfowl" ]]; then
@@ -268,7 +269,7 @@ if [[ "$run_from_perf_repo" == true ]]; then
     performance_directory=$workitem_directory
     setup_arguments="--perf-hash $commit_sha $common_setup_arguments"
 else
-    git clone --branch main --depth 1 --quiet https://github.com/dotnet/performance.git $performance_directory
+    git clone --branch add-ios-startup --depth 1 --quiet https://github.com/LoopedBard3/performance.git $performance_directory
     # uncomment to use BenchmarkDotNet sources instead of nuget packages
     # git clone https://github.com/dotnet/BenchmarkDotNet.git $benchmark_directory
 
