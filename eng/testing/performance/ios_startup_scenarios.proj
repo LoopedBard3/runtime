@@ -42,7 +42,7 @@
 
         sign HelloiOS.app
         xharness apple run --target ios-device -app HelloiOS.app 
-        ]]
+        ]]>
       </CustomCommands>
     </XHarnessAppBundleToTest>
   </ItemGroup>
