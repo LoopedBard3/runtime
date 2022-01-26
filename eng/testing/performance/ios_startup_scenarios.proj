@@ -31,7 +31,7 @@
           <PostCommands>$(Python) post.py</PostCommands>
       </HelixWorkItem>
 
-    <XHarnessAppBundleToTest Include="$PayloadDirectory\HelloiOS.app.zip">
+    <XHarnessAppBundleToTest Include="$(PayloadDirectory)\HelloiOS.app.zip">
       <WorkItemTimeout>00:05:00</WorkItemTimeout>
       <CustomCommands>
         <![CDATA[
