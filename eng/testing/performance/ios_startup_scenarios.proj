@@ -33,6 +33,7 @@
 
     <XHarnessAppBundleToTest Include="$(PayloadDirectory)\HelloiOS.app.zip">
       <WorkItemTimeout>00:05:00</WorkItemTimeout>
+      <TestTarget>ios-device</TestTarget>
       <CustomCommands>
         <![CDATA[
         # Test some stuff
@@ -41,7 +42,7 @@
         pwd
 
         sign HelloiOS.app
-        xharness apple run --target ios-device -app HelloiOS.app 
+        xharness apple run --target $target -app HelloiOS.app 
         ]]>
       </CustomCommands>
     </XHarnessAppBundleToTest>
