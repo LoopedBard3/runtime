@@ -42,7 +42,7 @@
       <Command>$(Python) test.py sod -1-scenario-name &quot;%(Identity)&quot;</Command>
       <PostCommands>$(Python) post.py</PostCommands>
     </HelixWorkItem>-->
-	<XHarnessAppBundleToTest Include="$(PayloadDirectory)\MauiiOSDefault.app">
+	<XHarnessAppBundleToTest Include="$(PayloadDirectory)\MauiiOSDefault\MauiiOSDefault.app">
       <WorkItemTimeout>00:05:00</WorkItemTimeout>
 	  <TestTarget>ios-device</TestTarget>
 	  <CustomCommands>
