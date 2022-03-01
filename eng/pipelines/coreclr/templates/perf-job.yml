@@ -169,20 +169,20 @@ jobs:
 
     # Download iOSMono tests and MauiiOS/MacCatalyst
     - ${{ if eq(parameters.runtimeType, 'iOSMono') }}:
-      - template: /eng/pipelines/common/download-artifact-step.yml
-        parameters:
-          unpackFolder: $(Build.SourcesDirectory)/iosHelloWorld/nollvm
-          cleanUnpackFolder: false
-          artifactFileName: 'iOSSampleAppNoLLVM.tar.gz'
-          artifactName: 'iOSSampleAppNoLLVM'
-          displayName: 'iOS Sample App NoLLVM'
-      - template: /eng/pipelines/common/download-artifact-step.yml
-        parameters:
-          unpackFolder: $(Build.SourcesDirectory)/iosHelloWorld/llvm
-          cleanUnpackFolder: false
-          artifactFileName: 'iOSSampleAppLLVM.tar.gz'
-          artifactName: 'iOSSampleAppLLVM'
-          displayName: 'iOS Sample App LLVM'
+      #- template: /eng/pipelines/common/download-artifact-step.yml
+      #  parameters:
+      #    unpackFolder: $(Build.SourcesDirectory)/iosHelloWorld/nollvm
+      #    cleanUnpackFolder: false
+      #    artifactFileName: 'iOSSampleAppNoLLVM.tar.gz'
+      #    artifactName: 'iOSSampleAppNoLLVM'
+      #    displayName: 'iOS Sample App NoLLVM'
+      #- template: /eng/pipelines/common/download-artifact-step.yml
+      #  parameters:
+      #    unpackFolder: $(Build.SourcesDirectory)/iosHelloWorld/llvm
+      #    cleanUnpackFolder: false
+      #    artifactFileName: 'iOSSampleAppLLVM.tar.gz'
+      #    artifactName: 'iOSSampleAppLLVM'
+      #    displayName: 'iOS Sample App LLVM'
       - template: /eng/pipelines/common/download-artifact-step.yml
         parameters:
           unpackFolder: $(Build.SourcesDirectory)/MauiiOSDefault
@@ -190,13 +190,13 @@ jobs:
           artifactFileName: 'MauiiOSDefault.tar.gz'
           artifactName: 'MauiiOSDefault'
           displayName: 'Maui iOS App'
-      - template: /eng/pipelines/common/download-artifact-step.yml
-        parameters:
-          unpackFolder: $(Build.SourcesDirectory)/MauiMacCatalystDefault
-          cleanUnpackFolder: false
-          artifactFileName: 'MauiMacCatalystDefault.tar.gz'
-          artifactName: 'MauiMacCatalystDefault'
-          displayName: 'Maui MacCatalyst App'
+      #- template: /eng/pipelines/common/download-artifact-step.yml
+      #  parameters:
+      #    unpackFolder: $(Build.SourcesDirectory)/MauiMacCatalystDefault
+      #    cleanUnpackFolder: false
+      #    artifactFileName: 'MauiMacCatalystDefault.tar.gz'
+      #    artifactName: 'MauiMacCatalystDefault'
+      #    displayName: 'Maui MacCatalyst App'
 
     # Create Core_Root
     - script: $(Build.SourcesDirectory)/src/tests/build$(scriptExt) $(buildConfig) $(archType) generatelayoutonly $(librariesOverrideArg)
