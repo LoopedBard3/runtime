@@ -65,7 +65,7 @@ jobs:
       - ${{ 'build_Android_arm64_release_AndroidMono' }}
       - ${{ 'Build_iOS_arm64_release_MACiOSAndroidMaui' }}
     - ${{ if eq(parameters.runtimeType, 'iOSMono')}}:
-      - ${{ 'build_iOS_arm64_release_iOSMono' }}
+      #- ${{ 'build_iOS_arm64_release_iOSMono' }}
       - ${{ 'Build_iOS_arm64_release_MACiOSAndroidMaui' }}
 
     ${{ if and(eq(parameters.osGroup, 'windows'), not(in(parameters.runtimeType, 'AndroidMono', 'iOSMono'))) }}:
@@ -89,7 +89,8 @@ jobs:
     ${{ if eq(parameters.runtimeType, 'AndroidMono') }}:
       extraSetupParameters: -Architecture ${{ parameters.archType }} -AndroidMono
     ${{ if eq(parameters.runtimeType, 'iosMono') }}:
-      extraSetupParameters: -Architecture ${{ parameters.archType }} -iOSMono -iOSLlvmBuild:$${{ parameters.iOSLlvmBuild }}
+      extraSetupParameters: --architecture ${{ parameters.archType }} --iosmono
+      #extraSetupParameters: -Architecture ${{ parameters.archType }} -iOSMono -iOSLlvmBuild:$${{ parameters.iOSLlvmBuild }}
 
     variables: ${{ parameters.variables }}
 
@@ -182,34 +183,34 @@ jobs:
 
     # Download iOSMono tests and MauiiOS/MacCatalyst
     - ${{ if eq(parameters.runtimeType, 'iOSMono') }}:
+      #- template: /eng/pipelines/common/download-artifact-step.yml
+      #  parameters:
+      #    unpackFolder: $(Build.SourcesDirectory)/iosHelloWorld/nollvm
+      #    cleanUnpackFolder: false
+      #    artifactFileName: 'iOSSampleAppNoLLVM.tar.gz'
+      #    artifactName: 'iOSSampleAppNoLLVM'
+      #    displayName: 'iOS Sample App NoLLVM'
+      #- template: /eng/pipelines/common/download-artifact-step.yml
+      #  parameters:
+      #    unpackFolder: $(Build.SourcesDirectory)/iosHelloWorld/llvm
+      #    cleanUnpackFolder: false
+      #    artifactFileName: 'iOSSampleAppLLVM.tar.gz'
+      #    artifactName: 'iOSSampleAppLLVM'
+      #    displayName: 'iOS Sample App LLVM'
       - template: /eng/pipelines/common/download-artifact-step.yml
         parameters:
-          unpackFolder: $(Build.SourcesDirectory)/iosHelloWorld/nollvm
-          cleanUnpackFolder: false
-          artifactFileName: 'iOSSampleAppNoLLVM.tar.gz'
-          artifactName: 'iOSSampleAppNoLLVM'
-          displayName: 'iOS Sample App NoLLVM'
-      - template: /eng/pipelines/common/download-artifact-step.yml
-        parameters:
-          unpackFolder: $(Build.SourcesDirectory)/iosHelloWorld/llvm
-          cleanUnpackFolder: false
-          artifactFileName: 'iOSSampleAppLLVM.tar.gz'
-          artifactName: 'iOSSampleAppLLVM'
-          displayName: 'iOS Sample App LLVM'
-      - template: /eng/pipelines/common/download-artifact-step.yml
-        parameters:
-          unpackFolder: $(Build.SourcesDirectory)/MauiiOSDefaultIPA
+          unpackFolder: $(Build.SourcesDirectory)/MauiiOSDefault
           cleanUnpackFolder: false
           artifactFileName: 'MauiiOSDefaultIPA.tar.gz'
           artifactName: 'MauiiOSDefaultIPA'
           displayName: 'Maui iOS IPA'
-      - template: /eng/pipelines/common/download-artifact-step.yml
-        parameters:
-          unpackFolder: $(Build.SourcesDirectory)/MauiMacCatalystDefault
-          cleanUnpackFolder: false
-          artifactFileName: 'MauiMacCatalystDefault.tar.gz'
-          artifactName: 'MauiMacCatalystDefault'
-          displayName: 'Maui MacCatalyst App'
+      #- template: /eng/pipelines/common/download-artifact-step.yml
+      #  parameters:
+      #    unpackFolder: $(Build.SourcesDirectory)/MauiMacCatalystDefault
+      #    cleanUnpackFolder: false
+      #    artifactFileName: 'MauiMacCatalystDefault.tar.gz'
+      #    artifactName: 'MauiMacCatalystDefault'
+      #    displayName: 'Maui MacCatalyst App'
 
     # Create Core_Root
     - script: $(Build.SourcesDirectory)/src/tests/build$(scriptExt) $(buildConfig) $(archType) generatelayoutonly $(librariesOverrideArg)

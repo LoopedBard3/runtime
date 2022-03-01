@@ -30,6 +30,7 @@ using_wasm=false
 use_latest_dotnet=false
 logical_machine=
 javascript_engine="v8"
+iosmono=false
 
 while (($# > 0)); do
   lowerI="$(echo $1 | tr "[:upper:]" "[:lower:]")"
@@ -140,6 +141,10 @@ while (($# > 0)); do
       use_latest_dotnet=true
       shift 1
       ;;
+    --iosmono)
+      iosmono=true
+      shift 1
+      ;;
     *)
       echo "Common settings:"
       echo "  --corerootdirectory <value>    Directory where Core_Root exists, if running perf testing with --corerun"
@@ -165,6 +170,7 @@ while (($# > 0)); do
       echo "  --wasmaot                      Indicate wasm aot"
       echo "  --latestdotnet                 --dotnet-versions will not be specified. --dotnet-versions defaults to LKG version in global.json "
       echo "  --alpine                       Set for runs on Alpine"
+      echo "  --iosmono                       Set for ios Mono/Maui runs"
       echo ""
       exit 0
       ;;
@@ -203,7 +209,9 @@ if [[ "$internal" == true ]]; then
     creator=
     extra_benchmark_dotnet_arguments=
 
-    if [[ "$architecture" == "arm64" ]]; then
+    if [[ "$logical_machine" == "perfiphone12mini" ]]; then
+        queue=OSX.1015.Amd64.Iphone.Perf
+    elif [[ "$architecture" == "arm64" ]]; then
         queue=Ubuntu.1804.Arm64.Perf
     else
         if [[ "$logical_machine" == "perfowl" ]]; then
@@ -306,6 +314,12 @@ fi
 if [[ "$use_baseline_core_run" == true ]]; then
   new_baseline_core_root=$payload_directory/Baseline_Core_Root
   mv $baseline_core_root_directory $new_baseline_core_root
+fi
+
+if [[ "$iosmono" == true ]]; then
+  ls -la
+  ls -la MauiiOSDefault
+  cp -vr MauiiOSDefault $payload_directory/MauiiOSDefault 
 fi
 
 ci=true

@@ -260,22 +260,22 @@ steps:
     displayName: Clean bin directory
     condition: succeededOrFailed()
 
-  - template: /eng/pipelines/common/upload-artifact-step.yml
-    parameters:
-      osGroup: ${{ parameters.osGroup }}
-      osSubgroup: ${{ parameters.osSubgroup }}
-      archType: ${{ parameters.archType }}
-      buildConfig: ${{ parameters.buildConfig }}
-      runtimeFlavor: ${{ parameters.runtimeFlavor }}
-      helixQueues: ${{ parameters.helixQueues }}
-      targetRid: ${{ parameters.targetRid }}
-      nameSuffix: ${{ parameters.nameSuffix }}
-      platform: ${{ parameters.platform }}
-      shouldContinueOnError: ${{ parameters.shouldContinueOnError }}
-      rootFolder:  ${{ parameters.rootFolder }}
-      includeRootFolder:  ${{ parameters.includeRootFolder }}
-      displayName:  ${{ parameters.displayName }}
-      artifactName:  ${{ parameters.artifactName }}
-      archiveExtension:  ${{ parameters.archiveExtension }}
-      archiveType:  ${{ parameters.archiveType }}
-      tarCompression:  ${{ parameters.tarCompression }}
+  #- template: /eng/pipelines/common/upload-artifact-step.yml
+  #  parameters:
+  #    osGroup: ${{ parameters.osGroup }}
+  #    osSubgroup: ${{ parameters.osSubgroup }}
+  #    archType: ${{ parameters.archType }}
+  #    buildConfig: ${{ parameters.buildConfig }}
+  #    runtimeFlavor: ${{ parameters.runtimeFlavor }}
+  #    helixQueues: ${{ parameters.helixQueues }}
+  #    targetRid: ${{ parameters.targetRid }}
+  #    nameSuffix: ${{ parameters.nameSuffix }}
+  #    platform: ${{ parameters.platform }}
+  #    shouldContinueOnError: ${{ parameters.shouldContinueOnError }}
+  #    rootFolder:  ${{ parameters.rootFolder }}
+  #    includeRootFolder:  ${{ parameters.includeRootFolder }}
+  #    displayName:  ${{ parameters.displayName }}
+  #    artifactName:  ${{ parameters.artifactName }}
+  #    archiveExtension:  ${{ parameters.archiveExtension }}
+  #    archiveType:  ${{ parameters.archiveType }}
+  #    tarCompression:  ${{ parameters.tarCompression }}
