@@ -519,7 +519,7 @@ jobs:
   # build maui app
   - template: /eng/pipelines/common/platform-matrix.yml
     parameters:
-      jobTemplate: /eng/pipelines/common/global-build-job.yml
+      jobTemplate: /eng/pipelines/common/perf-build-job.yml
       buildConfig: release
       runtimeFlavor: mono
       platforms:
