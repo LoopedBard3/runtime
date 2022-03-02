@@ -327,7 +327,7 @@ if [[ "$use_baseline_core_run" == true ]]; then
   mv $baseline_core_root_directory $new_baseline_core_root
 fi
 
-if[[ "$iosmono" == true ]]; then
+if [[ "$iosmono" == true ]]; then
   cp -r $scenario_directory/MauiiOSDefault $payload_directory/MauiiOSDefault 
 fi
 
