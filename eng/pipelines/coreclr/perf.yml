@@ -250,7 +250,7 @@ jobs:
       buildConfig: release
       runtimeFlavor: mono
       platforms:
-        - Windows_x64
+        - Linux_x64
       variables:
         - name: mauiVersion
           value: $[ dependencies.Build_iOS_arm64_release_MACiOSAndroidMaui.outputs['getMauiVersion.mauiVersion'] ]

@@ -51,8 +51,8 @@
           dir
           ls
           pwd
-          sign HelloiOS.app
-          xharness apple run --target $target -app HelloiOS.app 
+          sign MauiiOSDefault.app
+          xharness apple run --target $target -app MauiiOSDefault.app 
         ]]>
 	  </CustomCommands>
 	</XHarnessAppBundleToTest>
