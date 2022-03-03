@@ -540,6 +540,7 @@ jobs:
         isOfficialBuild: false
         pool:
           vmImage: 'macos-11'
+        displayName: Build_iOS_arm64_release_MACiOSAndroidMaui
         extraStepsTemplate: /eng/pipelines/coreclr/templates/build-perf-maui-apps.yml
         extraStepsParameters:
           rootFolder: '$(Build.SourcesDirectory)/artifacts/'
