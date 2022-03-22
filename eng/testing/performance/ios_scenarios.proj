@@ -54,9 +54,10 @@
 	  <CustomCommands>
 	   	<![CDATA[
           # Test some stuff
-          dir
-          ls -lr
+          ls
           pwd
+          cd $HELIX_CORRELATION_PAYLOAD
+          ls
           sign MauiiOSDefault.app
           xharness apple run --target $target -app MauiiOSDefault.app 
         ]]>
