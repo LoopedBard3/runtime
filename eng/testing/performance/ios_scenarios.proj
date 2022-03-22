@@ -30,25 +30,25 @@
         <Command>$(Python) test.py sod -1-scenario-name &quot;%(Identity)&quot;</Command>
         <PostCommands>$(Python) post.py</PostCommands>
     </HelixWorkItem>
-    <HelixWorkItem Include="SOD - Maui iOS IPA Size" Condition="'$(iOSLlvmBuild)' == 'False'">
-      <PayloadDirectory>$(WorkItemDirectory)</PayloadDirectory>
-      <PreCommands>cd $(ScenarioDirectory)mauiios;copy %HELIX_CORRELATION_PAYLOAD%\MauiiOSDefaultIPA\MauiiOSDefault.ipa .;$(Python) pre.py -1-name MauiiOSDefault.ipa</PreCommands>
-      <Command>$(Python) test.py sod -1-scenario-name &quot;%(Identity)&quot;</Command>
-      <PostCommands>$(Python) post.py</PostCommands>
-    </HelixWorkItem>
-    <HelixWorkItem Include="SOD - Maui iOS IPA Size Unzipped" Condition="'$(iOSLlvmBuild)' == 'False'">
-      <PayloadDirectory>$(WorkItemDirectory)</PayloadDirectory>
-      <PreCommands>cd $(ScenarioDirectory)mauiios;copy %HELIX_CORRELATION_PAYLOAD%\MauiiOSDefaultIPA\MauiiOSDefault.ipa .;$(Python) pre.py -1-unzip -1-name MauiiOSDefault.ipa</PreCommands>
-      <Command>$(Python) test.py sod -1-scenario-name &quot;%(Identity)&quot;</Command>
-      <PostCommands>$(Python) post.py</PostCommands>
-    </HelixWorkItem>
     <!-1-<HelixWorkItem Include="SOD - Maui MacCatalyst .app Size" Condition="'$(iOSLlvmBuild)' == 'False'">
       <PayloadDirectory>$(WorkItemDirectory)</PayloadDirectory>
       <PreCommands>cd $(ScenarioDirectory)mauiios;xcopy %HELIX_CORRELATION_PAYLOAD%\MauiMacCatalystDefault .\app\/e;$(Python) pre.py</PreCommands>
       <Command>$(Python) test.py sod -1-scenario-name &quot;%(Identity)&quot;</Command>
       <PostCommands>$(Python) post.py</PostCommands>
     </HelixWorkItem>-->
-	<XHarnessAppBundleToTest Include="$(WorkItemDirectory)">
+    <HelixWorkItem Include="SOD - Maui iOS IPA Size" Condition="'$(iOSLlvmBuild)' == 'False'">
+      <PayloadDirectory>$(WorkItemDirectory)</PayloadDirectory>
+      <PreCommands>cd $(ScenarioDirectory)mauiios;copy %HELIX_CORRELATION_PAYLOAD%\MauiiOSDefaultIPA\MauiiOSDefault.ipa .;$(Python) pre.py --name MauiiOSDefault.ipa</PreCommands>
+      <Command>$(Python) test.py sod --scenario-name &quot;%(Identity)&quot;</Command>
+      <PostCommands>$(Python) post.py</PostCommands>
+    </HelixWorkItem>
+    <HelixWorkItem Include="SOD - Maui iOS IPA Size Unzipped" Condition="'$(iOSLlvmBuild)' == 'False'">
+      <PayloadDirectory>$(WorkItemDirectory)</PayloadDirectory>
+      <PreCommands>cd $(ScenarioDirectory)mauiios;copy %HELIX_CORRELATION_PAYLOAD%\MauiiOSDefaultIPA\MauiiOSDefault.ipa .;$(Python) pre.py --unzip --name MauiiOSDefault.ipa</PreCommands>
+      <Command>$(Python) test.py sod --scenario-name &quot;%(Identity)&quot;</Command>
+      <PostCommands>$(Python) post.py</PostCommands>
+    </HelixWorkItem>
+	<XHarnessAppBundleToTest Include="$(WorkItemDirectory).zip">
       <WorkItemTimeout>00:05:00</WorkItemTimeout>
 	  <TestTarget>ios-device</TestTarget>
 	  <CustomCommands>

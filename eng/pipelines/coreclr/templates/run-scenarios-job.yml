@@ -158,6 +158,13 @@ jobs:
       env:
         PERFLAB_TARGET_FRAMEWORKS: net6.0
       condition: and(succeeded(), and(ne(variables['Agent.Os'], 'Windows_NT'), eq(variables['Agent.Os'], 'Darwin')))
+    # Zip the workitem directory
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(WorkItemDirectory)'
+        includeRootFolder: false
+        archiveFile: '$(WorkItemDirectory).zip'
+        verbose: True
       
     # run perf testing in helix
     - template: /eng/pipelines/coreclr/templates/perf-send-to-helix.yml
