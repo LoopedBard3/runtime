@@ -317,9 +317,11 @@ if [[ "$use_baseline_core_run" == true ]]; then
 fi
 
 if [[ "$iosmono" == true ]]; then
-  ls -la
-  ls -la MauiiOSDefault
-  cp -vr MauiiOSDefault $payload_directory/MauiiOSDefault 
+   cp -v MauiiOSDefault/MauiiOSDefault.ipa $payload_directory/MauiiOSDefault.ipa
+   # Get the .app so we can resign in the xharness item
+   cp -v MauiiOSDefault/MauiiOSDefault.ipa MauiiOSDefault/MauiiOSDefault.zip
+   unzip MauiiOSDefault.zip
+   mv Payload/MauiTesting.app $payload_directory/
 fi
 
 ci=true

@@ -58,9 +58,8 @@ jobs:
     - ${{ if eq(parameters.osGroup, 'windows') }}:
       - SharedHelixPreCommands: 'call %HELIX_WORKITEM_PAYLOAD%\machine-setup.cmd;set PYTHONPATH=%HELIX_WORKITEM_PAYLOAD%\scripts%3B%HELIX_WORKITEM_PAYLOAD%'
     - ${{ if ne(parameters.osGroup, 'windows') }}:
-      #- SharedHelixPreCommands: 'ls;pwd;chmod +x workitem/machine-setup.sh;. workitem/machine-setup.sh;export PYTHONPATH=workitem/scripts:workitem'
-      - SharedHelixPreCommands: 'ls $HELIX_WORKITEM_PAYLOAD;ls;pwd;[ -d $HELIX_WORKITEM_PAYLOAD/workitem ] && mv $HELIX_WORKITEM_PAYLOAD/workitem/* $HELIX_WORKITEM_PAYLOAD/;chmod +x $HELIX_WORKITEM_PAYLOAD/machine-setup.sh;. $HELIX_WORKITEM_PAYLOAD/machine-setup.sh;export PYTHONPATH=$HELIX_WORKITEM_PAYLOAD/scripts:$HELIX_WORKITEM_PAYLOAD'
-    
+      - SharedHelixPreCommands: 'chmod +x $HELIX_WORKITEM_PAYLOAD/machine-setup.sh;. $HELIX_WORKITEM_PAYLOAD/machine-setup.sh;export PYTHONPATH=$HELIX_WORKITEM_PAYLOAD/scripts:$HELIX_WORKITEM_PAYLOAD'
+
     # extra private job settings
     - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
       - ${{ if eq(parameters.osGroup, 'windows') }}:
@@ -158,6 +157,7 @@ jobs:
       env:
         PERFLAB_TARGET_FRAMEWORKS: net6.0
       condition: and(succeeded(), and(ne(variables['Agent.Os'], 'Windows_NT'), eq(variables['Agent.Os'], 'Darwin')))
+
     # Zip the workitem directory
     - task: ArchiveFiles@2
       inputs:
