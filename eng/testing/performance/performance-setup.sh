@@ -320,8 +320,8 @@ if [[ "$iosmono" == true ]]; then
    cp -v MauiiOSDefault/MauiiOSDefault.ipa $payload_directory/MauiiOSDefault.ipa
    # Get the .app so we can resign in the xharness item
    cp -v MauiiOSDefault/MauiiOSDefault.ipa MauiiOSDefault/MauiiOSDefault.zip
-   unzip MauiiOSDefault.zip
-   mv Payload/MauiTesting.app $payload_directory/
+   unzip MauiiOSDefault/MauiiOSDefault.zip
+   mv MauiiOSDefault/Payload/MauiTesting.app $payload_directory/
 fi
 
 ci=true
