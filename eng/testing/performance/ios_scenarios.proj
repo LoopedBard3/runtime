@@ -54,16 +54,28 @@
 	  <CustomCommands>
 	   	<![CDATA[
           # Test some stuff
-          cd $HELIX_CORRELATION_PAYLOAD
           pwd
           ls
+          # PreCommands
+          cd $(ScenarioDirectory)mauiios
+          cp -r $HELIX_CORRELATION_PAYLOAD/MauiTesting.app MauiTesting.app
           sign MauiTesting.app
-          ls
+          pwd
+          ls -Ra
+          $(Python) pre.py --name MauiTesting.app
+
+          # Middle logging/testing stuff
           echo "Target: ${target}"
           echo "xharness apple run --target ${target} -app MauiTesting.app" 
           xharness apple run --target $target -app MauiTesting.app 
           cp -r MauiTesting.app $HELIX_WORKITEM_ROOT/MauiTesting.app
-          xharness apple run --target $target -app MauiTesting.app 
+          xharness apple run --target $target -app MauiTesting.app
+
+          # Testing commands
+          $(Python) test.py devicestartup --device-type ios --package-path pub/MauiTesting.app --package-name com.companyname.mauimauitesting --scenario-name "$(Identity)"
+
+          # Post commands
+          $(Python) post.py   
         ]]>
 	  </CustomCommands>
 	</XHarnessAppBundleToTest>
