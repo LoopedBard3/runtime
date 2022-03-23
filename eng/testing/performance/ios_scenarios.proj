@@ -1,4 +1,7 @@
 <Project Sdk="Microsoft.DotNet.Helix.Sdk" DefaultTargets="Test">
+  <PropertyGroup>
+    <IncludeXHarnessCli>true</IncludeXHarnessCli>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(AGENT_OS)' != 'Windows_NT'">
     <Python>python3</Python>
     <HelixPreCommands>$(HelixPreCommands);chmod +x $HELIX_WORKITEM_PAYLOAD/SOD/SizeOnDisk</HelixPreCommands>
@@ -61,8 +64,9 @@
           cp -r $HELIX_CORRELATION_PAYLOAD/MauiTesting.app MauiTesting.app
           sign MauiTesting.app
           pwd
-          ls -Ra
+          ls
           $(Python) pre.py --name MauiTesting.app
+          ls -Ra
 
           # Middle logging/testing stuff
           echo "Target: ${target}"
