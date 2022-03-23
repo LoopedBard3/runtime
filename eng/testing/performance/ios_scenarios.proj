@@ -54,12 +54,13 @@
 	  <CustomCommands>
 	   	<![CDATA[
           # Test some stuff
-          pwd
-          ls
           cd $HELIX_CORRELATION_PAYLOAD
           pwd
           ls
           sign MauiTesting.app
+          ls
+          xharness apple run --target $target -app MauiTesting.app 
+          cp -r MauiTesting.app $HELIX_WORKITEM_ROOT/MauiTesting.app
           xharness apple run --target $target -app MauiTesting.app 
         ]]>
 	  </CustomCommands>
