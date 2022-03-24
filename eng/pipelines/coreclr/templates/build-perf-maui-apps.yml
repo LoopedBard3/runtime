@@ -112,6 +112,7 @@ steps:
 
   # Get the current maui nuget config so all things can be found and darc based package sources are kept up to date.
   - script: |
+      echo "##vso[task.setvariable variable=MauiInstalled]Unknown"
       curl -o NuGet.config 'https://raw.githubusercontent.com/dotnet/maui/main/NuGet.config'
       curl -o dotnet-install.sh 'https://dotnet.microsoft.com/download/dotnet/scripts/v1/dotnet-install.sh'
       chmod -R a+rx .
@@ -143,8 +144,10 @@ steps:
       ../dotnet restore
       ../dotnet publish -bl:MauiAndroid.binlog -f net6.0-android -c Release -r android-arm64 --no-restore --self-contained
       mv ./bin/Release/net6.0-android/android-arm64/com.companyname.mauitesting-Signed.apk ./MauiAndroidDefault.apk
+      echo "##vso[task.setvariable variable=MauiAndroidBuildDefault]Success"
     displayName: Build MAUI Android
     workingDirectory: $(Build.SourcesDirectory)/MauiTesting
+    continueOnError: False
 
   - script: |
       set -x
@@ -199,7 +202,7 @@ steps:
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish MauiAndroid binlog'
-    condition: always()
+    condition: eq(variables.MauiAndroidBuildDefault, 'Success')
     inputs:
       pathtoPublish: $(Build.SourcesDirectory)/MauiTesting/MauiAndroid.binlog
       artifactName:  ${{ parameters.artifactName }}
