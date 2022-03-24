@@ -246,50 +246,49 @@ steps:
       pathtoPublish: $(Build.SourcesDirectory)/dotnet-podcasts/src/Mobile/MauiAndroidPodcast.binlog
       artifactName:  ${{ parameters.artifactName }}
 
-  - template: /eng/pipelines/common/upload-artifact-step.yml
-    condition: eq(variables.MauiAndroidBuildDefault, 'Success')
-    parameters:
-        rootFolder: $(Build.SourcesDirectory)/MauiTesting/MauiAndroidDefault.apk
-        includeRootFolder: true
-        displayName: Maui Android App
-        artifactName: MauiAndroidApp
-        archiveExtension: '.tar.gz'
-        archiveType: tar
-        tarCompression: gz
+  - ${{ if eq(variables.MauiAndroidBuildDefault, 'Success') }}:
+    - template: /eng/pipelines/common/upload-artifact-step.yml
+      parameters:
+          rootFolder: $(Build.SourcesDirectory)/MauiTesting/MauiAndroidDefault.apk
+          includeRootFolder: true
+          displayName: Maui Android App
+          artifactName: MauiAndroidApp
+          archiveExtension: '.tar.gz'
+          archiveType: tar
+          tarCompression: gz
 
-  - template: /eng/pipelines/common/upload-artifact-step.yml
-    condition: eq(variables.MauiAndroidBuildPodcast, 'Success')
-    parameters:
-        rootFolder: $(Build.SourcesDirectory)/MauiTesting/MauiAndroidPodcast.apk
-        includeRootFolder: true
-        displayName: Maui Android Podcast
-        artifactName: MauiAndroidPodcast
-        archiveExtension: '.tar.gz'
-        archiveType: tar
-        tarCompression: gz
+  - ${{ if eq(variables.MauiAndroidBuildPodcast, 'Success') }}:
+    - template: /eng/pipelines/common/upload-artifact-step.yml
+      parameters:
+          rootFolder: $(Build.SourcesDirectory)/MauiTesting/MauiAndroidPodcast.apk
+          includeRootFolder: true
+          displayName: Maui Android Podcast
+          artifactName: MauiAndroidPodcast
+          archiveExtension: '.tar.gz'
+          archiveType: tar
+          tarCompression: gz
 
+  - ${{ if eq(variables.MauiiOSBuildDefault, 'Success') }}:
+    - template: /eng/pipelines/common/upload-artifact-step.yml
+      parameters:
+          rootFolder: $(Build.SourcesDirectory)/MauiTesting/MauiiOSDefault.ipa
+          includeRootFolder: true
+          displayName: Maui iOS IPA
+          artifactName: MauiiOSDefaultIPA
+          archiveExtension: '.tar.gz'
+          archiveType: tar
+          tarCompression: gz
 
-  - template: /eng/pipelines/common/upload-artifact-step.yml
-    condition: eq(variables.MauiiOSBuildDefault, 'Success')
-    parameters:
-        rootFolder: $(Build.SourcesDirectory)/MauiTesting/MauiiOSDefault.ipa
-        includeRootFolder: true
-        displayName: Maui iOS IPA
-        artifactName: MauiiOSDefaultIPA
-        archiveExtension: '.tar.gz'
-        archiveType: tar
-        tarCompression: gz
-
-  - template: /eng/pipelines/common/upload-artifact-step.yml
-    condition: eq(variables.MauiMacCatalystBuildDefault, 'Success')
-    parameters:
-        rootFolder: $(Build.SourcesDirectory)/MauiTesting/MauiMacCatalystDefault.app
-        includeRootFolder: true
-        displayName: Maui MacCatalyst App
-        artifactName: MauiMacCatalystDefault
-        archiveExtension: '.tar.gz'
-        archiveType: tar
-        tarCompression: gz
+  - ${{ if eq(variables.MauiMacCatalystBuildDefault, 'Success') }}:
+    - template: /eng/pipelines/common/upload-artifact-step.yml
+      parameters:
+          rootFolder: $(Build.SourcesDirectory)/MauiTesting/MauiMacCatalystDefault.app
+          includeRootFolder: true
+          displayName: Maui MacCatalyst App
+          artifactName: MauiMacCatalystDefault
+          archiveExtension: '.tar.gz'
+          archiveType: tar
+          tarCompression: gz
 
   - script: rm -r -f ./bin
     workingDirectory: $(Build.SourcesDirectory)/MauiTesting
