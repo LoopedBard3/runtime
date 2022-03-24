@@ -67,6 +67,9 @@
           $(Python) pre.py --name MauiTesting.app
           echo "Target: ${target}"
           echo "XharnessPath: ${XharnessPath}"
+          echo "XHARNESS_CLI_PATH: ${XHARNESS_CLI_PATH}"
+          echo "HELIX_WORKITEM_ROOT: ${HELIX_WORKITEM_ROOT}"
+          echo "PERFLAB_REPO: ${PERFLAB_REPO}"
           echo "xharness apple run -t ${target} -o . --app com.companyname.mauimauitesting --timeout 00:02:00"
           xharness apple run -t $target -o . --app com.companyname.mauimauitesting --timeout 00:02:00
 
