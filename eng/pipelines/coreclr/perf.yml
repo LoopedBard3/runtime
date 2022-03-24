@@ -536,7 +536,7 @@ jobs:
           vmImage: 'macos-11'
         extraStepsTemplate: /eng/pipelines/coreclr/templates/build-perf-maui-apps.yml
         extraStepsParameters:
-          rootFolder: '$(Build.SourcesDirectory)/artifacts/'
+          rootFolder: '$(Build.SourcesDirectory)'
           includeRootFolder: true
           displayName: MAC, iOS, and Android Maui Artifacts
           artifactName: MACiOSAndroidMauiArm
