@@ -212,7 +212,6 @@ steps:
       chmod -R a+r .
       ../dotnet publish -bl:MauiMacCatalyst.binlog -f net6.0-maccatalyst -c Release
       mv ./bin/Release/net6.0-maccatalyst/maccatalyst-x64/MauiTesting.app ./MauiMacCatalystDefault.app
-      exit 1
       echo "##vso[task.setvariable variable=MauiMacCatalystBuildDefault]Success"
     displayName: Build MAUI MacCatalyst
     workingDirectory: $(Build.SourcesDirectory)/MauiTesting
