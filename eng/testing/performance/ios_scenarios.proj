@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.DotNet.Helix.Sdk" DefaultTargets="Test">
   <PropertyGroup>
     <IncludeXHarnessCli>true</IncludeXHarnessCli>
-    <XharnessPath>%HELIX_CORRELATION_PAYLOAD%\microsoft.dotnet.xharness.cli\$(MicrosoftDotNetXHarnessCLIVersion)\tools\net6.0\any\Microsoft.DotNet.XHarness.CLI.dll</XharnessPath>
+    <MicrosoftDotNetXHarnessCLIVersion>1.0.0-prerelease.22164.2</MicrosoftDotNetXHarnessCLIVersion>
+    <XharnessPath>$(HELIX_CORRELATION_PAYLOAD)\microsoft.dotnet.xharness.cli\$(MicrosoftDotNetXHarnessCLIVersion)\tools\net6.0\any\Microsoft.DotNet.XHarness.CLI.dll</XharnessPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(AGENT_OS)' != 'Windows_NT'">
     <Python>python3</Python>
@@ -57,21 +58,20 @@
 	  <TestTarget>ios-device</TestTarget>
 	  <CustomCommands>
 	   	<![CDATA[
-          # Test some stuff
-          pwd
-          ls
           # PreCommands
           cd $(ScenarioDirectory)mauiios
           cp -r $HELIX_CORRELATION_PAYLOAD/MauiTesting.app MauiTesting.app
           sign MauiTesting.app
-          pwd
-          ls
+
           $(Python) pre.py --name MauiTesting.app
           ls -Ra
           echo "Target: ${target}"
+          echo "XharnessPath: ${XharnessPath}"
+          echo "xharness apple run -t ${target} -o . --app com.companyname.mauimauitesting --timeout 00:02:00"
+          xharness apple run -t $target -o . --app com.companyname.mauimauitesting --timeout 00:02:00
 
           # Testing commands
-          $(Python) test.py devicestartup --device-type ios --package-path pub/MauiTesting.app --package-name com.companyname.mauimauitesting --scenario-name "$(Identity)"
+          $(Python) test.py devicestartup --device-type ios --package-path pub/MauiTesting.app --package-name com.companyname.mauimauitesting --scenario-name "Device Startup - iOS Maui DefaultTesting"
 
           # Post commands
           $(Python) post.py   
