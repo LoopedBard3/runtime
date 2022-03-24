@@ -59,14 +59,12 @@
 	  <CustomCommands>
 	   	<![CDATA[
           # PreCommands
-          echo on
-          export XHARNESSPATH=$(XharnessPath)
+          export XHARNESSPATH=$(XHARNESS_CLI_PATH)
           cd $(ScenarioDirectory)mauiios
           cp -r $HELIX_CORRELATION_PAYLOAD/MauiTesting.app MauiTesting.app
           sign MauiTesting.app
 
           $(Python) pre.py --name MauiTesting.app
-          ls -Ra
           echo "Target: ${target}"
           echo "XharnessPath: ${XharnessPath}"
           echo "xharness apple run -t ${target} -o . --app com.companyname.mauimauitesting --timeout 00:02:00"
