@@ -59,6 +59,7 @@
 	  <CustomCommands>
 	   	<![CDATA[
           # PreCommands
+          set XHARNESSPATH=$(XharnessPath)
           cd $(ScenarioDirectory)mauiios
           cp -r $HELIX_CORRELATION_PAYLOAD/MauiTesting.app MauiTesting.app
           sign MauiTesting.app
