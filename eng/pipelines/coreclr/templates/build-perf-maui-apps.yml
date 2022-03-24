@@ -112,22 +112,23 @@ steps:
 
   # Get the current maui nuget config so all things can be found and darc based package sources are kept up to date.
   - script: |
-      echo "##vso[task.setvariable variable=MauiInstalled]Unknown"
       curl -o NuGet.config 'https://raw.githubusercontent.com/dotnet/maui/main/NuGet.config'
       curl -o dotnet-install.sh 'https://dotnet.microsoft.com/download/dotnet/scripts/v1/dotnet-install.sh'
       chmod -R a+rx .
       ./dotnet-install.sh --channel 6.0.3xx --quality daily --install-dir .
       ./dotnet --info
       ./dotnet workload install maui --from-rollback-file https://aka.ms/dotnet/maui/main.json --configfile NuGet.config
-      exit 1
       echo "##vso[task.setvariable variable=MauiInstalled]Success"
     displayName: Install MAUI workload
     workingDirectory: $(Build.SourcesDirectory)
     continueOnError: False
 
-  - script: $(Build.SourcesDirectory)/eng/testing/performance/create-provisioning-profile.sh
+  - script: |
+      $(Build.SourcesDirectory)/eng/testing/performance/create-provisioning-profile.sh
+      echo "##vso[task.setvariable variable=iOSSigningCreated]Success"
     displayName: Create iOS code signing and provisioning profile
     condition: eq(variables.MauiInstalled, 'Success')
+    continueOnError: False
 
   - script: |
       ./dotnet new maui -n MauiTesting
@@ -135,8 +136,11 @@ steps:
       cp $(Build.SourcesDirectory)/src/tests/Common/maui/MauiScenario.props ./Directory.Build.props
       cp $(Build.SourcesDirectory)/src/tests/Common/maui/MauiScenario.targets ./Directory.Build.targets
       cp $(Build.SourcesDirectory)/NuGet.config ./NuGet.config
+      echo "##vso[task.setvariable variable=MauiSetup]Success"
     displayName: Setup MAUI Project
     workingDirectory: $(Build.SourcesDirectory)
+    condition: eq(variables.MauiInstalled, 'Success')
+    continueOnError: False
 
   - script: |
       chmod -R a+r .
@@ -147,28 +151,8 @@ steps:
       echo "##vso[task.setvariable variable=MauiAndroidBuildDefault]Success"
     displayName: Build MAUI Android
     workingDirectory: $(Build.SourcesDirectory)/MauiTesting
+    condition: eq(variables.MauiSetup, 'Success')
     continueOnError: False
-
-  - script: |
-      set -x
-      pwd
-      git clone https://github.com/microsoft/dotnet-podcasts.git -b maui/perf --single-branch
-      cd dotnet-podcasts
-      cp $(Build.SourcesDirectory)/src/tests/Common/maui/MauiScenario.props ./Directory.Build.props
-      cp $(Build.SourcesDirectory)/src/tests/Common/maui/MauiScenario.targets ./Directory.Build.targets
-    displayName:  Clone podcast app
-    workingDirectory: $(Build.SourcesDirectory)
-
-  - script: |
-      set -x
-      pwd
-      chmod -R a+r .
-      ../../../dotnet restore Microsoft.NetConf2021.Maui.csproj
-      ../../../dotnet publish Microsoft.NetConf2021.Maui.csproj -bl:MauiAndroid.binlog -r android-arm64 --self-contained --no-restore -f net6.0-android -c Release
-      mv ./bin/Release/net6.0-android/android-arm64/com.Microsoft.NetConf2021.Maui-Signed.apk $(Build.SourcesDirectory)/MauiTesting/MauiAndroidPodcast.apk
-    displayName: Build podcast app for MAUI
-    workingDirectory:  $(Build.SourcesDirectory)/dotnet-podcasts/src/Mobile
-
 
     # This step pulls the product version from the used Microsoft.Maui.dll file properties and saves it for upload with the maui test counter.
     # We pull from this file as we did not find another place to reliably get the version information pre or post build.
@@ -179,6 +163,34 @@ steps:
     name: getMauiVersion
     displayName: Get and Save MAUI Version
     workingDirectory: $(Build.SourcesDirectory)/MauiTesting
+    condition: eq(variables.MauiAndroidBuildDefault, 'Success')
+    continueOnError: False
+
+  - script: |
+      set -x
+      pwd
+      git clone https://github.com/microsoft/dotnet-podcasts.git -b maui/perf --single-branch
+      cd dotnet-podcasts
+      cp $(Build.SourcesDirectory)/src/tests/Common/maui/MauiScenario.props ./Directory.Build.props
+      cp $(Build.SourcesDirectory)/src/tests/Common/maui/MauiScenario.targets ./Directory.Build.targets
+      echo "##vso[task.setvariable variable=MauiPodcastCloned]Success"
+    displayName:  Clone podcast app
+    workingDirectory: $(Build.SourcesDirectory)
+    condition: eq(variables.MauiSetup, 'Success')
+    continueOnError: False
+
+  - script: |
+      set -x
+      pwd
+      chmod -R a+r .
+      ../../../dotnet restore Microsoft.NetConf2021.Maui.csproj
+      ../../../dotnet publish Microsoft.NetConf2021.Maui.csproj -bl:MauiAndroidPodcast.binlog -r android-arm64 --self-contained --no-restore -f net6.0-android -c Release
+      mv ./bin/Release/net6.0-android/android-arm64/com.Microsoft.NetConf2021.Maui-Signed.apk $(Build.SourcesDirectory)/MauiTesting/MauiAndroidPodcast.apk
+      echo "##vso[task.setvariable variable=MauiAndroidBuildPodcast]Success"
+    displayName: Build podcast Android app for MAUI
+    workingDirectory:  $(Build.SourcesDirectory)/dotnet-podcasts/src/Mobile
+    condition: eq(variables.MauiPodcastCloned, 'Success')
+    continueOnError: False
 
   - script: |
       chmod -R a+r .
@@ -190,15 +202,21 @@ steps:
       mv ./bin/Release/net6.0-ios/ios-arm64/publish/MauiTesting.ipa ./MauiiOSDefault.ipa
 
       cp MauiTesting.csproj.bak MauiTesting.csproj
+      echo "##vso[task.setvariable variable=MauiiOSBuildDefault]Success"
     displayName: Build MAUI iOS
     workingDirectory: $(Build.SourcesDirectory)/MauiTesting
+    condition: eq(variables.MauiSetup, 'Success')
+    continueOnError: False
 
   - script: |
       chmod -R a+r .
       ../dotnet publish -bl:MauiMacCatalyst.binlog -f net6.0-maccatalyst -c Release
       mv ./bin/Release/net6.0-maccatalyst/maccatalyst-x64/MauiTesting.app ./MauiMacCatalystDefault.app
+      echo "##vso[task.setvariable variable=MauiMacCatalystBuildDefault]Success"
     displayName: Build MAUI MacCatalyst
     workingDirectory: $(Build.SourcesDirectory)/MauiTesting
+    condition: eq(variables.MauiSetup, 'Success')
+    continueOnError: False
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish MauiAndroid binlog'
@@ -209,19 +227,27 @@ steps:
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish MauiiOS binlog'
-    condition: always()
+    condition: eq(variables.MauiiOSBuildDefault, 'Success')
     inputs:
       pathtoPublish: $(Build.SourcesDirectory)/MauiTesting/MauiiOS.binlog
       artifactName:  ${{ parameters.artifactName }}
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish MauiMacCatalyst binlog'
-    condition: always()
+    condition: eq(variables.MauiMacCatalystBuildDefault, 'Success')
     inputs:
       pathtoPublish: $(Build.SourcesDirectory)/MauiTesting/MauiMacCatalyst.binlog
       artifactName:  ${{ parameters.artifactName }}
 
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish MauiAndroidPodcast binlog'
+    condition: eq(variables.MauiAndroidBuildPodcast, 'Success')
+    inputs:
+      pathtoPublish: $(Build.SourcesDirectory)/dotnet-podcasts/src/Mobile/MauiAndroidPodcast.binlog
+      artifactName:  ${{ parameters.artifactName }}
+
   - template: /eng/pipelines/common/upload-artifact-step.yml
+    condition: eq(variables.MauiAndroidBuildDefault, 'Success')
     parameters:
         rootFolder: $(Build.SourcesDirectory)/MauiTesting/MauiAndroidDefault.apk
         includeRootFolder: true
@@ -232,6 +258,7 @@ steps:
         tarCompression: gz
 
   - template: /eng/pipelines/common/upload-artifact-step.yml
+    condition: eq(variables.MauiAndroidBuildPodcast, 'Success')
     parameters:
         rootFolder: $(Build.SourcesDirectory)/MauiTesting/MauiAndroidPodcast.apk
         includeRootFolder: true
@@ -243,6 +270,7 @@ steps:
 
 
   - template: /eng/pipelines/common/upload-artifact-step.yml
+    condition: eq(variables.MauiiOSBuildDefault, 'Success')
     parameters:
         rootFolder: $(Build.SourcesDirectory)/MauiTesting/MauiiOSDefault.ipa
         includeRootFolder: true
@@ -253,6 +281,7 @@ steps:
         tarCompression: gz
 
   - template: /eng/pipelines/common/upload-artifact-step.yml
+    condition: eq(variables.MauiMacCatalystBuildDefault, 'Success')
     parameters:
         rootFolder: $(Build.SourcesDirectory)/MauiTesting/MauiMacCatalystDefault.app
         includeRootFolder: true
