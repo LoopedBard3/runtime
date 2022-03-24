@@ -118,11 +118,15 @@ steps:
       ./dotnet-install.sh --channel 6.0.3xx --quality daily --install-dir .
       ./dotnet --info
       ./dotnet workload install maui --from-rollback-file https://aka.ms/dotnet/maui/main.json --configfile NuGet.config
+      exit 1
+      echo "##vso[task.setvariable variable=MauiInstalled]Success"
     displayName: Install MAUI workload
     workingDirectory: $(Build.SourcesDirectory)
+    continueOnError: False
 
   - script: $(Build.SourcesDirectory)/eng/testing/performance/create-provisioning-profile.sh
     displayName: Create iOS code signing and provisioning profile
+    condition: eq(variables.MauiInstalled, 'Success')
 
   - script: |
       ./dotnet new maui -n MauiTesting
