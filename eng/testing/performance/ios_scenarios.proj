@@ -73,11 +73,11 @@
           echo "HELIX_WORKITEM_ROOT: $HELIX_WORKITEM_ROOT"
           echo "PERFLAB_REPO: $PERFLAB_REPO"
           ls -Ra
-          echo "xharness apple run -t ${target} -o . --app com.companyname.mauimauitesting --timeout 00:02:00"
+          echo "xharness apple run -t ${target} -o . --app MauiTesting.app --timeout 00:02:00"
           xharness apple run -t $target -o . --app com.companyname.mauimauitesting --timeout 00:02:00
 
           # Testing commands
-          $(Python) test.py devicestartup --device-type ios --package-path pub/MauiTesting.app --package-name com.companyname.mauimauitesting --scenario-name "Device Startup - iOS Maui DefaultTesting"
+          $(Python) test.py devicestartup --device-type ios --package-path pub --package-name com.companyname.mauimauitesting --scenario-name "Device Startup - iOS Maui DefaultTesting"
 
           # Post commands
           $(Python) post.py   
