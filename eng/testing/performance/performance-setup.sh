@@ -170,7 +170,7 @@ while (($# > 0)); do
       echo "  --wasmaot                      Indicate wasm aot"
       echo "  --latestdotnet                 --dotnet-versions will not be specified. --dotnet-versions defaults to LKG version in global.json "
       echo "  --alpine                       Set for runs on Alpine"
-      echo "  --iosmono                       Set for ios Mono/Maui runs"
+      echo "  --iosmono                      Set for ios Mono/Maui runs"
       echo ""
       exit 0
       ;;

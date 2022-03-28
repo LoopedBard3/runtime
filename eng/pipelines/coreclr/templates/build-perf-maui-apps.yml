@@ -179,6 +179,9 @@ steps:
       cp MauiTesting.csproj MauiTesting.csproj.bak
       sed -i'' -e 's/net6.0-ios;net6.0-maccatalyst/net6.0-ios/g' MauiTesting.csproj
 
+      # Test xharness with the app id set to net.dot.mauitesting
+      sed -i'' -e 's/com.companyname.mauitesting/net.dot.mauitesting/g' MauiTesting.csproj
+
       ../dotnet publish -bl:MauiiOS.binlog -f net6.0-ios --self-contained -r ios-arm64 -c Release /p:_RequireCodeSigning=false
       mv ./bin/Release/net6.0-ios/ios-arm64/publish/MauiTesting.ipa ./MauiiOSDefault.ipa
 
