@@ -53,22 +53,24 @@
       <Command>$(Python) test.py sod --scenario-name &quot;%(Identity)&quot;</Command>
       <PostCommands>$(Python) post.py</PostCommands>
     </HelixWorkItem>
-	<XHarnessAppBundleToTest Include="$(WorkItemDirectory).zip">
-      <WorkItemTimeout>00:05:00</WorkItemTimeout>
+	<XHarnessAppBundleToTest Include="Device Startup - iOS Maui DefaultTesting">
+    <AppBundlePath>$(WorkItemDirectory).zip</AppBundlePath>
+    <WorkItemTimeout>00:05:00</WorkItemTimeout>
 	  <TestTarget>ios-device</TestTarget>
 	  <CustomCommands>
 	   	<![CDATA[
           # PreCommands
-          echo "Default XharnessPath: $XharnessPath"
+          echo "Default XharnessPath: $XHARNESSPATH"
           export XHARNESSPATH=$XHARNESS_CLI_PATH
-          echo "After 1 XharnessPath: $XharnessPath"
+          echo "After 1 XharnessPath: $XHARNESSPATH"
+          ls -Ra
           cd $(ScenarioDirectory)mauiios
           cp -r $HELIX_CORRELATION_PAYLOAD/MauiTesting.app MauiTesting.app
           sign MauiTesting.app
 
           $(Python) pre.py --name MauiTesting.app
           echo "Target: $target"
-          echo "XharnessPath: $XharnessPath"
+          echo "XHARNESSPATH: $XHARNESSPATH"
           echo "XHARNESS_CLI_PATH: $XHARNESS_CLI_PATH"
           echo "HELIX_WORKITEM_ROOT: $HELIX_WORKITEM_ROOT"
           echo "PERFLAB_REPO: $PERFLAB_REPO"
