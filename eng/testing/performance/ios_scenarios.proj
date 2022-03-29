@@ -60,21 +60,12 @@
 	  <CustomCommands>
 	   	<![CDATA[
           # PreCommands
-          echo "Default XharnessPath: $XHARNESSPATH"
           export XHARNESSPATH=$XHARNESS_CLI_PATH
-          echo "After 1 XharnessPath: $XHARNESSPATH"
-          ls -Ra
-          cd $(ScenarioDirectory)mauiios
-          cp -r $HELIX_CORRELATION_PAYLOAD/MauiTesting.app MauiTesting.app
+          cp -f embedded.mobileprovision MauiTesting.app/embedded.mobileprovision
           sign MauiTesting.app
-
+          cp -r MauiTesting.app $(ScenarioDirectory)mauiios/MauiTesting.app
+          cd $(ScenarioDirectory)mauiios
           $(Python) pre.py --name MauiTesting.app
-          echo "Target: $target"
-          echo "XHARNESSPATH: $XHARNESSPATH"
-          echo "XHARNESS_CLI_PATH: $XHARNESS_CLI_PATH"
-          echo "HELIX_WORKITEM_ROOT: $HELIX_WORKITEM_ROOT"
-          echo "PERFLAB_REPO: $PERFLAB_REPO"
-          ls -Ra
           echo "xharness apple run -t $target -o . --app MauiTesting.app --timeout 00:02:00"
           xharness apple run -t $target -o . --app MauiTesting.app --timeout 00:02:00
 
