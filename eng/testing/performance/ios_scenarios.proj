@@ -61,7 +61,8 @@
 	   	<![CDATA[
           # PreCommands
           export XHARNESSPATH=$XHARNESS_CLI_PATH
-          cp -f embedded.mobileprovision MauiTesting.app/embedded.mobileprovision
+
+          cp -f embedded.mobileprovision MauiTesting.app/
           sign MauiTesting.app
           cp -r MauiTesting.app $(ScenarioDirectory)mauiios/MauiTesting.app
           cd $(ScenarioDirectory)mauiios
