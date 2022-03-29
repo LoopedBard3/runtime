@@ -62,10 +62,11 @@
           # PreCommands
           export XHARNESSPATH=$XHARNESS_CLI_PATH
 
-          cp -f embedded.mobileprovision MauiTesting.app/
-          sign MauiTesting.app
-          cp -r MauiTesting.app $(ScenarioDirectory)mauiios/MauiTesting.app
+          cp -r $HELIX_CORRELATION_PAYLOAD/MauiTesting.app $(ScenarioDirectory)mauiios/MauiTesting.app
+          cp -f embedded.mobileprovision $(ScenarioDirectory)mauiios/MauiTesting.app
           cd $(ScenarioDirectory)mauiios
+          sign MauiTesting.app
+
           $(Python) pre.py --name MauiTesting.app
           echo "xharness apple run -t $target -o . --app MauiTesting.app --timeout 00:02:00"
           xharness apple run -t $target -o . --app MauiTesting.app --timeout 00:02:00
