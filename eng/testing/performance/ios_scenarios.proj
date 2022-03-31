@@ -68,11 +68,9 @@
           sign MauiTesting.app
 
           $(Python) pre.py --name MauiTesting.app
-          echo "xharness apple run -t $target -o . --app MauiTesting.app --timeout 00:02:00"
-          xharness apple run -t $target -o . --app MauiTesting.app --timeout 00:02:00
 
           # Testing commands
-          $(Python) test.py devicestartup --device-type ios --package-path pub --package-name MauiTesting.app --scenario-name "Device Startup - iOS Maui DefaultTesting"
+          $(Python) test.py devicestartup --device-type ios --package-path pub/MauiTesting.app --package-name net.dot.mauitesting --scenario-name "%(Identity)"
 
           # Post commands
           $(Python) post.py   
