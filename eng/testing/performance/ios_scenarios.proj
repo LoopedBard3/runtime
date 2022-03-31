@@ -7,6 +7,7 @@
   <PropertyGroup Condition="'$(AGENT_OS)' != 'Windows_NT'">
     <Python>python3</Python>
     <HelixPreCommands>$(HelixPreCommands);chmod +x $HELIX_WORKITEM_PAYLOAD/SOD/SizeOnDisk</HelixPreCommands>
+    <HelixPreCommands>$(HelixPreCommands);chmod +x $HELIX_WORKITEM_PAYLOAD/startup/Startup</HelixPreCommands>
   </PropertyGroup>
 
   <ItemGroup>
@@ -68,6 +69,7 @@
           sign MauiTesting.app
 
           $(Python) pre.py --name MauiTesting.app  # TODO: looks like this doesn't really do anything useful, remove it?
+          ls -aR
 
           # Testing commands
           $(Python) test.py devicestartup --device-type ios --package-path MauiTesting.app --package-name net.dot.mauitesting --scenario-name "%(Identity)"
