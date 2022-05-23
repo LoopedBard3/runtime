@@ -85,6 +85,7 @@
           ((result=$?))
           
           # Post commands
+          idevicediagnostics restart
           $(Python) post.py
           exit $result
         ]]>
@@ -111,6 +112,7 @@
           ((result=$?))
           
           # Post commands
+          idevicediagnostics restart
           $(Python) post.py
           exit $result
         ]]>
