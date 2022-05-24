@@ -78,6 +78,8 @@
           cd $(ScenarioDirectory)mauiios
           sign MauiTesting.app
 
+          idevicediagnostics restart
+          sleep 30
           $(Python) pre.py --name MauiTesting.app
 
           # Testing commands
@@ -85,7 +87,6 @@
           ((result=$?))
           
           # Post commands
-          idevicediagnostics restart
           $(Python) post.py
           exit $result
         ]]>
@@ -105,6 +106,8 @@
           cd $(ScenarioDirectory)mauiios
           sign Microsoft.NetConf2021.Maui.app
 
+          idevicediagnostics restart
+          sleep 30
           $(Python) pre.py --name Microsoft.NetConf2021.Maui.app
 
           # Testing commands
@@ -112,7 +115,6 @@
           ((result=$?))
           
           # Post commands
-          idevicediagnostics restart
           $(Python) post.py
           exit $result
         ]]>
