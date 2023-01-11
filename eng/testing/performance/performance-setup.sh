@@ -203,7 +203,9 @@ if [[ "$internal" == true ]]; then
     creator=
     extra_benchmark_dotnet_arguments=
     
-    if [[ "$architecture" = "arm64" ]]; then
+    if [[ "$logical_machine" == "perfampere" ]]; then
+        queue=Ubuntu.2004.Arm64.Perf
+    elif [[ "$architecture" = "arm64" ]]; then
         queue=Ubuntu.1804.Arm64.Perf
     else
         if [[ "$logical_machine" = "perfowl" ]]; then
