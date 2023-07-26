@@ -59,7 +59,7 @@ hello-app: clean
 	-p:DeployAndRun=$(DEPLOY_AND_RUN) \
 	-p:StripDebugSymbols=$(STRIP_DEBUG_SYMBOLS) \
 	-p:PublishAotUsingRuntimePack=$(USE_RUNTIME_PACKS) \
-    -p:HybridGlobalization=$(HYBRID_GLOBALIZATION) \
+	-p:HybridGlobalization=$(HYBRID_GLOBALIZATION) \
 	-bl
 
 clean:
