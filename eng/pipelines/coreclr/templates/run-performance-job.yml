@@ -97,6 +97,7 @@ jobs:
     - HelixPreCommandStemMusl: 'export ORIGPYPATH=$PYTHONPATH;sudo apk add icu-libs krb5-libs libgcc libintl libssl1.1 libstdc++ zlib cargo;sudo apk add libgdiplus --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing; python3 -m venv $HELIX_WORKITEM_PAYLOAD/.venv;source $HELIX_WORKITEM_PAYLOAD/.venv/bin/activate;export PYTHONPATH=;python3 -m pip install -U pip;pip3 install urllib3==1.26.15;pip3 install azure.storage.blob==12.7.1;pip3 install azure.storage.queue==12.1.5;export PERFLAB_UPLOAD_TOKEN="$(HelixPerfUploadTokenValue)"'
     - ExtraMSBuildLogsWindows: 'set MSBUILDDEBUGCOMM=1;set "MSBUILDDEBUGPATH=%HELIX_WORKITEM_UPLOAD_ROOT%"'
     - ExtraMSBuildLogsLinux: 'export MSBUILDDEBUGCOMM=1;export "MSBUILDDEBUGPATH=$HELIX_WORKITEM_UPLOAD_ROOT"'
+    - ExtraDotnetCrashDumpLinux: 'export DOTNET_DbgEnableMiniDump=1;export "DOTNET_DbgMiniDumpName=$HELIX_WORKITEM_UPLOAD_ROOT/coredump"'
     - HelixPreCommand: ''
     - HelixPostCommand: ''
     - Interpreter: ''
@@ -108,11 +109,11 @@ jobs:
         - IsInternal: -Internal
       - ${{ if ne(parameters.osGroup, 'windows') }}:
         - ${{ if eq(parameters.osSubGroup, '_musl') }}:
-          - HelixPreCommand: $(HelixPreCommandStemMusl);$(ExtraMSBuildLogsLinux)
+          - HelixPreCommand: $(HelixPreCommandStemMusl);$(ExtraMSBuildLogsLinux);$(ExtraDotnetCrashDumpLinux)
           - HelixPostCommand: 'export PYTHONPATH=$ORIGPYPATH'
           - IsInternal: --internal
         - ${{ if ne(parameters.osSubGroup, '_musl') }}:
-          - HelixPreCommand: $(HelixPreCommandStemLinux);$(ExtraMSBuildLogsLinux)
+          - HelixPreCommand: $(HelixPreCommandStemLinux);$(ExtraMSBuildLogsLinux);$(ExtraDotnetCrashDumpLinux)
           - HelixPostCommand: 'export PYTHONPATH=$ORIGPYPATH;${{ parameters.collectHelixLogsScript }}'
           - IsInternal: --internal
       - group: DotNet-HelixApi-Access
@@ -123,7 +124,7 @@ jobs:
         - HelixPreCommand: $(HelixPreCommandStemWindows);$(ExtraMSBuildLogsWindows)
         - HelixPostCommand: 'export PYTHONPATH=$ORIGPYPATH;${{ parameters.collectHelixLogsScript }}'
       - ${{ if ne(parameters.osGroup, 'windows') }}:
-        - HelixPreCommand: $(HelixPreCommandStemLinux);$(ExtraMSBuildLogsLinux);
+        - HelixPreCommand: $(HelixPreCommandStemLinux);$(ExtraMSBuildLogsLinux);$(ExtraDotnetCrashDumpLinux);
         - HelixPostCommand: 'export PYTHONPATH=$ORIGPYPATH;${{ parameters.collectHelixLogsScript }}'
 
     - ${{ if and(eq(parameters.codeGenType, 'Interpreter'), eq(parameters.runtimeType, 'mono')) }}:
@@ -136,10 +137,10 @@ jobs:
           - Interpreter: ' -MonoInterpreter'
       - ${{ if ne(parameters.osGroup, 'windows') }}:
         - ${{ if and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest')) }}:
-          - HelixPreCommand: '$(HelixPreCommandStemLinux);export MONO_ENV_OPTIONS="--interpreter";$(ExtraMSBuildLogsLinux)'
+          - HelixPreCommand: '$(HelixPreCommandStemLinux);export MONO_ENV_OPTIONS="--interpreter";$(ExtraMSBuildLogsLinux);$(ExtraDotnetCrashDumpLinux)'
           - Interpreter: ' --monointerpreter'
         - ${{ if not(and(ne(variables['System.TeamProject'], 'public'), notin(variables['Build.Reason'], 'PullRequest'))) }}:
-          - HelixPreCommand: 'export MONO_ENV_OPTIONS="--interpreter";$(ExtraMSBuildLogsLinux)'
+          - HelixPreCommand: 'export MONO_ENV_OPTIONS="--interpreter";$(ExtraMSBuildLogsLinux);$(ExtraDotnetCrashDumpLinux)'
           - Interpreter: ' --monointerpreter'
 
 

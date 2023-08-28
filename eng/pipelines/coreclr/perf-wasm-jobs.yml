@@ -96,32 +96,32 @@ jobs:
           extraStepsParameters:
             configForBuild: Release
 
-  # run mono wasm interpreter (default) microbenchmarks perf job
-  - template: /eng/pipelines/common/platform-matrix.yml
-    parameters:
-      jobTemplate: /eng/pipelines/coreclr/templates/perf-job.yml # NOTE: should we move this file out of coreclr tempelates because it contains mono jobs?
-      buildConfig: release
-      runtimeFlavor: wasm
-      platforms:
-      - linux_x64
-      jobParameters:
-        testGroup: perf
-        liveLibrariesBuildConfig: Release
-        skipLiveLibrariesDownload: true
-        runtimeType: wasm
-        codeGenType: 'wasm'
-        projectFile: microbenchmarks.proj
-        runKind: micro
-        runJobTemplate: /eng/pipelines/coreclr/templates/run-performance-job.yml
-        logicalmachine: 'perftiger'
-        javascriptEngine: 'v8'
-        # For working with a newer sdk, and previous tfm (eg. 9.0 sdk, and net8.0 tfm)
-        additionalSetupParameters: '--dotnet-versions 8.0.0'
-        collectHelixLogsScript: ${{ parameters.collectHelixLogsScript }}
-        compare: ${{ parameters.compare }}
-        onlySanityCheck: ${{ parameters.onlySanityCheck }}
-        downloadSpecificBuild: ${{ parameters.downloadSpecificBuild }}
-        perfForkToUse: ${{ parameters.perfForkToUse }}
+  # # run mono wasm interpreter (default) microbenchmarks perf job
+  # - template: /eng/pipelines/common/platform-matrix.yml
+  #   parameters:
+  #     jobTemplate: /eng/pipelines/coreclr/templates/perf-job.yml # NOTE: should we move this file out of coreclr tempelates because it contains mono jobs?
+  #     buildConfig: release
+  #     runtimeFlavor: wasm
+  #     platforms:
+  #     - linux_x64
+  #     jobParameters:
+  #       testGroup: perf
+  #       liveLibrariesBuildConfig: Release
+  #       skipLiveLibrariesDownload: true
+  #       runtimeType: wasm
+  #       codeGenType: 'wasm'
+  #       projectFile: microbenchmarks.proj
+  #       runKind: micro
+  #       runJobTemplate: /eng/pipelines/coreclr/templates/run-performance-job.yml
+  #       logicalmachine: 'perftiger'
+  #       javascriptEngine: 'v8'
+  #       # For working with a newer sdk, and previous tfm (eg. 9.0 sdk, and net8.0 tfm)
+  #       additionalSetupParameters: '--dotnet-versions 8.0.0'
+  #       collectHelixLogsScript: ${{ parameters.collectHelixLogsScript }}
+  #       compare: ${{ parameters.compare }}
+  #       onlySanityCheck: ${{ parameters.onlySanityCheck }}
+  #       downloadSpecificBuild: ${{ parameters.downloadSpecificBuild }}
+  #       perfForkToUse: ${{ parameters.perfForkToUse }}
 
   #run mono wasm aot microbenchmarks perf job
   - template: /eng/pipelines/common/platform-matrix.yml
@@ -150,24 +150,24 @@ jobs:
         downloadSpecificBuild: ${{ parameters.downloadSpecificBuild }}
         perfForkToUse: ${{ parameters.perfForkToUse }}
 
-  # run mono wasm blazor perf job
-  - template: /eng/pipelines/common/platform-matrix.yml
-    parameters:
-      jobTemplate: /eng/pipelines/coreclr/templates/perf-job.yml
-      buildConfig: release
-      runtimeFlavor: wasm
-      platforms:
-      - linux_x64
-      jobParameters:
-        testGroup: perf
-        liveLibrariesBuildConfig: Release
-        skipLiveLibrariesDownload: true
-        runtimeType: wasm
-        projectFile: blazor_perf.proj
-        runKind: blazor_scenarios
-        runJobTemplate: /eng/pipelines/coreclr/templates/run-scenarios-job.yml
-        # For working with a newer sdk, and previous tfm (eg. 9.0 sdk, and net8.0 tfm)
-        additionalSetupParameters: '--dotnetversions 8.0.0' # passed to performance-setup.sh
-        logicalmachine: 'perftiger'
-        downloadSpecificBuild: ${{ parameters.downloadSpecificBuild }}
-        perfForkToUse: ${{ parameters.perfForkToUse }}
+  # # run mono wasm blazor perf job
+  # - template: /eng/pipelines/common/platform-matrix.yml
+  #   parameters:
+  #     jobTemplate: /eng/pipelines/coreclr/templates/perf-job.yml
+  #     buildConfig: release
+  #     runtimeFlavor: wasm
+  #     platforms:
+  #     - linux_x64
+  #     jobParameters:
+  #       testGroup: perf
+  #       liveLibrariesBuildConfig: Release
+  #       skipLiveLibrariesDownload: true
+  #       runtimeType: wasm
+  #       projectFile: blazor_perf.proj
+  #       runKind: blazor_scenarios
+  #       runJobTemplate: /eng/pipelines/coreclr/templates/run-scenarios-job.yml
+  #       # For working with a newer sdk, and previous tfm (eg. 9.0 sdk, and net8.0 tfm)
+  #       additionalSetupParameters: '--dotnetversions 8.0.0' # passed to performance-setup.sh
+  #       logicalmachine: 'perftiger'
+  #       downloadSpecificBuild: ${{ parameters.downloadSpecificBuild }}
+  #       perfForkToUse: ${{ parameters.perfForkToUse }}
