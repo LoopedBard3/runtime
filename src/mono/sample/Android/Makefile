@@ -6,6 +6,7 @@ AOT=false
 AOT_WITH_LIBRARY_FILES=false
 INTERP=false
 DEPLOY_AND_RUN?=true
+TARGET_API_LEVEL?=34
 
 #If DIAGNOSTIC_PORTS is enabled, RUNTIME_COMPONENTS must also be enabled.
 #If RUNTIME_COMPONENTS is enabled, DIAGNOSTIC_PORTS is optional.
@@ -34,7 +35,8 @@ run:
 	/p:UseLLVM=$(USE_LLVM) \
 	/p:RunActivity=false \
 	'/p:RuntimeComponents="$(RUNTIME_COMPONENTS)"' \
-	'/p:DiagnosticPorts="$(DIAGNOSTIC_PORTS)"'
+	'/p:DiagnosticPorts="$(DIAGNOSTIC_PORTS)"' \
+	/p:TargetApiLevel=$(TARGET_API_LEVEL) \
 
 clean:
 	rm -rf ../../../../artifacts/bin/AndroidSampleApp
