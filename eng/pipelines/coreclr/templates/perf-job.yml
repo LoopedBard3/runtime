@@ -117,9 +117,9 @@ jobs:
     ${{ if in(parameters.runtimeType, 'AndroidMono') }}:
       extraSetupParameters: -Architecture ${{ parameters.archType }} -AndroidMono
     ${{ if in(parameters.runtimeType, 'iOSMono') }}:
-      extraSetupParameters: --architecture ${{ parameters.archType }} --iosmono --iosllvmbuild ${{ parameters.iOSLlvmBuild }} --iosstripsymbols ${{ parameters.iOSStripSymbols }} --hybridglobalization ${{ parameters.hybridGlobalization }}
+      extraSetupParameters: --architecture ${{ parameters.archType }} --iosmono --iosllvmbuild ${{ parameters.iOSLlvmBuild }} --iosstripsymbols ${{ parameters.iOSStripSymbols }}
     ${{ if in(parameters.runtimeType, 'iOSNativeAOT') }}:
-      extraSetupParameters: --architecture ${{ parameters.archType }} --iosnativeaot --iosllvmbuild ${{ parameters.iOSLlvmBuild }} --iosstripsymbols ${{ parameters.iOSStripSymbols }} --hybridglobalization ${{ parameters.hybridGlobalization }}
+      extraSetupParameters: --architecture ${{ parameters.archType }} --iosnativeaot --iosllvmbuild ${{ parameters.iOSLlvmBuild }} --iosstripsymbols ${{ parameters.iOSStripSymbols }}
 
     variables:
     - ${{ each variable in parameters.variables }}:
@@ -244,23 +244,23 @@ jobs:
           unpackFolder: $(Build.SourcesDirectory)/iosHelloWorld
           cleanUnpackFolder: false
           ${{ if and(eq(parameters.runtimeType, 'iOSMono'), eq(parameters.iOSLlvmBuild, 'False'), eq(parameters.iOSStripSymbols, 'False')) }}:
-            artifactName: 'iOSSampleAppNoLLVMSymbolsHybridGlobalization${{parameters.hybridGlobalization}}'
-            artifactFileName: 'iOSSampleAppNoLLVMSymbolsHybridGlobalization${{parameters.hybridGlobalization}}.zip'
+            artifactName: 'iOSSampleAppNoLLVMSymbols'
+            artifactFileName: 'iOSSampleAppNoLLVMSymbols.zip'
           ${{ if and(eq(parameters.runtimeType, 'iOSMono'), eq(parameters.iOSLlvmBuild, 'False'), eq(parameters.iOSStripSymbols, 'True')) }}:
-            artifactName: 'iOSSampleAppNoLLVMNoSymbolsHybridGlobalization${{parameters.hybridGlobalization}}'
-            artifactFileName: 'iOSSampleAppNoLLVMNoSymbolsHybridGlobalization${{parameters.hybridGlobalization}}.zip'
+            artifactName: 'iOSSampleAppNoLLVMNoSymbols'
+            artifactFileName: 'iOSSampleAppNoLLVMNoSymbols.zip'
           ${{ if and(eq(parameters.runtimeType, 'iOSMono'), eq(parameters.iOSLlvmBuild, 'True'), eq(parameters.iOSStripSymbols, 'False')) }}:
-            artifactName: 'iOSSampleAppLLVMSymbolsHybridGlobalization${{parameters.hybridGlobalization}}'
-            artifactFileName: 'iOSSampleAppLLVMSymbolsHybridGlobalization${{parameters.hybridGlobalization}}.zip'
+            artifactName: 'iOSSampleAppLLVMSymbols'
+            artifactFileName: 'iOSSampleAppLLVMSymbols.zip'
           ${{ if and(eq(parameters.runtimeType, 'iOSMono'), eq(parameters.iOSLlvmBuild, 'True'), eq(parameters.iOSStripSymbols, 'True')) }}:
-            artifactName: 'iOSSampleAppLLVMNoSymbolsHybridGlobalization${{parameters.hybridGlobalization}}'
-            artifactFileName: 'iOSSampleAppLLVMNoSymbolsHybridGlobalization${{parameters.hybridGlobalization}}.zip'
+            artifactName: 'iOSSampleAppLLVMNoSymbols'
+            artifactFileName: 'iOSSampleAppLLVMNoSymbols.zip'
           ${{ if and(eq(parameters.runtimeType, 'iOSNativeAOT'), eq(parameters.iOSStripSymbols, 'False')) }}:
-            artifactName: 'iOSSampleAppSymbolsHybridGlobalization${{parameters.hybridGlobalization}}'
-            artifactFileName: 'iOSSampleAppSymbolsHybridGlobalization${{parameters.hybridGlobalization}}.zip'
+            artifactName: 'iOSSampleAppSymbols'
+            artifactFileName: 'iOSSampleAppSymbols.zip'
           ${{ if and(eq(parameters.runtimeType, 'iOSNativeAOT'), eq(parameters.iOSStripSymbols, 'True')) }}:
-            artifactName: 'iOSSampleAppNoSymbolsHybridGlobalization${{parameters.hybridGlobalization}}'
-            artifactFileName: 'iOSSampleAppNoSymbolsHybridGlobalization${{parameters.hybridGlobalization}}.zip'
+            artifactName: 'iOSSampleAppNoSymbols'
+            artifactFileName: 'iOSSampleAppNoSymbols.zip'
           displayName: 'iOS Sample App'
       # same artifact as above but don't extract .zip
       - task: DownloadBuildArtifacts@0
@@ -270,17 +270,17 @@ jobs:
           downloadType: single
           downloadPath: '$(Build.SourcesDirectory)/iosHelloWorldZip'
           ${{ if and(eq(parameters.runtimeType, 'iOSMono'), eq(parameters.iOSLlvmBuild, 'False'), eq(parameters.iOSStripSymbols, 'False')) }}:
-            artifactName: 'iOSSampleAppNoLLVMSymbolsHybridGlobalization${{parameters.hybridGlobalization}}'
+            artifactName: 'iOSSampleAppNoLLVMSymbols'
           ${{ if and(eq(parameters.runtimeType, 'iOSMono'), eq(parameters.iOSLlvmBuild, 'False'), eq(parameters.iOSStripSymbols, 'True')) }}:
-            artifactName: 'iOSSampleAppNoLLVMNoSymbolsHybridGlobalization${{parameters.hybridGlobalization}}'
+            artifactName: 'iOSSampleAppNoLLVMNoSymbols'
           ${{ if and(eq(parameters.runtimeType, 'iOSMono'), eq(parameters.iOSLlvmBuild, 'True'), eq(parameters.iOSStripSymbols, 'False')) }}:
-            artifactName: 'iOSSampleAppLLVMSymbolsHybridGlobalization${{parameters.hybridGlobalization}}'
+            artifactName: 'iOSSampleAppLLVMSymbols'
           ${{ if and(eq(parameters.runtimeType, 'iOSMono'), eq(parameters.iOSLlvmBuild, 'True'), eq(parameters.iOSStripSymbols, 'True')) }}:
-            artifactName: 'iOSSampleAppLLVMNoSymbolsHybridGlobalization${{parameters.hybridGlobalization}}'
+            artifactName: 'iOSSampleAppLLVMNoSymbols'
           ${{ if and(eq(parameters.runtimeType, 'iOSNativeAOT'), eq(parameters.iOSStripSymbols, 'False')) }}:
-            artifactName: 'iOSSampleAppSymbolsHybridGlobalization${{parameters.hybridGlobalization}}'
+            artifactName: 'iOSSampleAppSymbols'
           ${{ if and(eq(parameters.runtimeType, 'iOSNativeAOT'), eq(parameters.iOSStripSymbols, 'True')) }}:
-            artifactName: 'iOSSampleAppNoSymbolsHybridGlobalization${{parameters.hybridGlobalization}}'
+            artifactName: 'iOSSampleAppNoSymbols'
           checkDownloadedFiles: true
 
     # Create Core_Root
