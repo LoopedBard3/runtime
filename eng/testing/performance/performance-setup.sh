@@ -299,6 +299,8 @@ if [[ "$internal" == true ]]; then
 
     if [[ "$logical_machine" == "perfiphone12mini" ]]; then
         queue=OSX.13.Amd64.Iphone.Perf
+    elif [[ "$logical_machine" == "perfiphone12miniold" ]]; then
+        queue=OSX.Amd64.Iphone.Perf
     elif [[ "$logical_machine" == "perfampere" ]]; then
         queue=Ubuntu.2204.Arm64.Perf
     elif [[ "$logical_machine" == "perfviper" ]]; then
