@@ -53,6 +53,7 @@ if ($Internal) {
         "perfsurf" { $Queue = "Windows.11.Arm64.Surf.Perf" }
         "perfpixel4a" { $Queue = "Windows.11.Amd64.Pixel.Perf" }
         "perfampere" { $Queue = "Windows.Server.Arm64.Perf" }
+        "perfviper" { $Queue = "Windows.11.Amd64.Viper.Perf" }
         "cloudvm" { $Queue = "Windows.10.Amd64" }
         Default { $Queue = "Windows.11.Amd64.Tiger.Perf" }
     }
