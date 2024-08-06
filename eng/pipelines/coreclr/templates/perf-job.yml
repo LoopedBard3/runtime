@@ -169,8 +169,8 @@ jobs:
         parameters:
           unpackFolder: $(librariesDownloadDir)/bin/mono/$(osGroup).$(archType).$(buildConfigUpper)
           cleanUnpackFolder: false
-          artifactFileName: 'MonoProduct__${{ parameters.runtimeVariant }}_$(osGroup)_$(archType)_$(buildConfig)$(archiveExtension)'
-          artifactName: 'MonoProduct__${{ parameters.runtimeVariant }}_$(osGroup)_$(archType)_$(buildConfig)'
+          artifactFileName: 'MonoProduct_${{ parameters.runtimeVariant }}_$(osGroup)_$(archType)_$(buildConfig)$(archiveExtension)'
+          artifactName: 'MonoProduct_${{ parameters.runtimeVariant }}_$(osGroup)_$(archType)_$(buildConfig)'
           displayName: 'Mono runtime'
 
     # Download wasm
@@ -229,7 +229,7 @@ jobs:
           artifactFileName: 'AndroidBDNApk.tar.gz'
           artifactName: 'AndroidBDNApk'
           displayName: 'Mono Android BDN Apk'
-      
+
     # Download iOSMono and Native AOT tests
     - ${{ if or(eq(parameters.runtimeType, 'iOSMono'), eq(parameters.runtimeType, 'iOSNativeAOT')) }}:
       - template: /eng/pipelines/common/download-artifact-step.yml
