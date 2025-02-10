@@ -63,6 +63,7 @@ steps:
       set -x
       pwd
       git clone https://github.com/dotnet/maui.git --depth 1 -b ${{parameters.framework}} --single-branch
+      ls -l
     displayName:  Clone Maui
     workingDirectory: $(Build.SourcesDirectory)
 
