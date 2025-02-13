@@ -61,7 +61,7 @@ steps:
   - script: |
       set -x
       pwd
-      git clone https://github.com/dotnet/maui.git --depth 1 -b ${{parameters.framework}} --single-branch
+      git clone https://github.com/LoopedBard3/maui.git --depth 1 -b TestNewerGradleVersion --single-branch
     displayName:  Clone Maui
     workingDirectory: $(Build.SourcesDirectory)
 
