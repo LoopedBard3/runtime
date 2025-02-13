@@ -68,7 +68,7 @@ steps:
   - script: |
       set -x
       pwd
-      git clone https://github.com/dotnet/performance.git --depth 1 -b ${{parameters.perfBranch}} --single-branch
+      git clone https://github.com/LoopedBard3/performance.git --depth 1 -b TestOnlyAndroid --single-branch
     displayName:  Clone performance
     workingDirectory: $(Build.SourcesDirectory)
 
