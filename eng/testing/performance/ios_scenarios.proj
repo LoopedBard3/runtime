@@ -61,9 +61,51 @@
 
           $(Python) pre.py --name HelloiOS.app
 
+          # Check for connected device before running tests
+          echo "Checking for connected iOS device..."
+          device_check_attempts=0
+          max_device_check_attempts=12
+          while [ $device_check_attempts -lt $max_device_check_attempts ]; do
+            if $XHARNESSPATH apple device --list | grep -q "Found.*device"; then
+              echo "iOS device found and ready"
+              break
+            fi
+            echo "No device found, waiting 10 seconds... (attempt $((device_check_attempts + 1))/$max_device_check_attempts)"
+            sleep 10
+            device_check_attempts=$((device_check_attempts + 1))
+          done
+
+          if [ $device_check_attempts -eq $max_device_check_attempts ]; then
+            echo "Warning: No iOS device found after $max_device_check_attempts attempts, proceeding anyway..."
+          fi
+
           # Testing commands
           $(Python) test.py devicestartup --device-type ios --package-path HelloiOS.app --package-name net.dot.HelloiOS --scenario-name "%(Identity)" $(ScenarioArgs)
           ((result=$?))
+
+          # Reboot device for next run (resilient to device not found)
+          echo "Attempting to reboot iOS device..."
+          if idevicediagnostics restart; then
+            echo "Device reboot initiated, waiting for device to come back online..."
+            # Wait for device to restart (up to 3 minutes)
+            reboot_wait_attempts=0
+            max_reboot_wait_attempts=18
+            while [ $reboot_wait_attempts -lt $max_reboot_wait_attempts ]; do
+              sleep 10
+              if $XHARNESSPATH apple device --list | grep -q "Found.*device"; then
+                echo "Device is back online after reboot"
+                break
+              fi
+              echo "Waiting for device to come back online... (attempt $((reboot_wait_attempts + 1))/$max_reboot_wait_attempts)"
+              reboot_wait_attempts=$((reboot_wait_attempts + 1))
+            done
+
+            if [ $reboot_wait_attempts -eq $max_reboot_wait_attempts ]; then
+              echo "Warning: Device did not come back online within expected time after reboot"
+            fi
+          else
+            echo "Warning: Could not reboot device (device may not be connected or available)"
+          fi
 
           # Post commands
           $(Python) post.py
