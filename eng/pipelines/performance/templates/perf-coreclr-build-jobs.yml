@@ -39,6 +39,43 @@ jobs:
               tarCompression: $(tarCompression)
               artifactName: BuildArtifacts_$(osGroup)$(osSubgroup)_$(archType)_$(_BuildConfig)_coreclr
               displayName: Build Assets
+          - task: PythonScript@0
+            displayName: Select packaged runtime (Windows)
+            condition: and(succeeded(), eq(variables['osGroup'], 'windows'))
+            inputs:
+              scriptSource: filePath
+              scriptPath: $(Build.SourcesDirectory)/eng/pipelines/performance/scripts/select_runtime_distribution.py
+              arguments: >-
+                --shipping-dir "$(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)/Shipping"
+                --os-group "$(osGroup)"
+                --architecture "$(archType)"
+          - task: PythonScript@0
+            displayName: Select packaged runtime (Linux)
+            condition: and(succeeded(), eq(variables['osGroup'], 'linux'))
+            inputs:
+              scriptSource: filePath
+              scriptPath: $(Build.SourcesDirectory)/eng/pipelines/performance/scripts/select_runtime_distribution.py
+              pythonInterpreter: /usr/bin/python3
+              arguments: >-
+                --shipping-dir "$(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)/Shipping"
+                --os-group "$(osGroup)"
+                --architecture "$(archType)"
+          - task: CopyFiles@2
+            displayName: Stage packaged runtime
+            inputs:
+              SourceFolder: $(Build.SourcesDirectory)/artifacts/packages/$(_BuildConfig)/Shipping
+              Contents: $(RuntimeDistributionFiles)
+              TargetFolder: $(Build.ArtifactStagingDirectory)/RuntimeDistribution
+              CleanTargetFolder: true
+              preserveTimestamp: true
+          - template: /eng/pipelines/common/upload-artifact-step.yml
+            parameters:
+              rootFolder: $(Build.ArtifactStagingDirectory)/RuntimeDistribution
+              includeRootFolder: false
+              archiveType: zip
+              archiveExtension: .zip
+              artifactName: RuntimeDistribution_$(osGroup)$(osSubgroup)_$(archType)_$(_BuildConfig)_coreclr
+              displayName: Packaged Runtime
 
   - ${{ if eq(parameters.android_arm64, true) }}:
     # build CoreCLR Android scenarios
